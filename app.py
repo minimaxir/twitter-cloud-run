@@ -52,10 +52,7 @@ async def homepage(request):
         return UJSONResponse({'text': 'Incorrect request token.'},
                              headers=response_header)
 
-    text = ''
-
-    while len(text) >= 0 and len(text) <= 280:
-
+    while True:
         # You can adapt this block for any text-generation method,
         # e.g. pulling text from a list.
         text = gpt2.generate(sess,
@@ -64,6 +61,9 @@ async def homepage(request):
                              top_k=40,
                              return_as_list=True
                              )[0]
+
+        if len(text) <= 280:
+            break
 
     api.update_status(text)
 
