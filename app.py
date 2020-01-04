@@ -55,6 +55,10 @@ async def homepage(request):
     text = ''
 
     while len(text) > 0 and len(text) < 280:
+
+        # You can adapt this block for any text-generatio method,
+        # e.g. pulling text from a list.
+
         text = gpt2.generate(sess,
                              length=300,
                              temperature=uniform(0.7, 1.0),
@@ -62,7 +66,7 @@ async def homepage(request):
                              return_as_list=True
                              )[0]
 
-    api.update_status(gen_text)
+    api.update_status(text)
 
     return UJSONResponse({'text': 'Tweeet succeessful!'},
                          headers=response_header)
