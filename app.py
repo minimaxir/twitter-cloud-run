@@ -54,11 +54,10 @@ async def homepage(request):
 
     text = ''
 
-    while len(text) > 0 and len(text) < 280:
+    while len(text) >= 0 and len(text) <= 280:
 
-        # You can adapt this block for any text-generatio method,
+        # You can adapt this block for any text-generation method,
         # e.g. pulling text from a list.
-
         text = gpt2.generate(sess,
                              length=300,
                              temperature=uniform(0.7, 1.0),
