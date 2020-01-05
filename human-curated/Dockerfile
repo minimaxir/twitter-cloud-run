@@ -1,4 +1,4 @@
-FROM python:3.8-slim-stretch
+FROM python:3.8.1-slim-buster
 
 RUN apt-get -y update && apt-get -y install gcc
 
