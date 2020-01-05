@@ -59,7 +59,8 @@ async def homepage(request):
                              return_as_list=True
                              )[0]
 
-        if len(text) <= 280 and '<|startoftext|>' not in text:
+        if (len(text) > 0 and len(text) <= 280
+                and '<|startoftext|>' not in text):
             break
 
     api.update_status(text)
