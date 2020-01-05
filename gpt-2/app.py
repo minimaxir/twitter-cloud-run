@@ -1,10 +1,8 @@
 from starlette.applications import Starlette
 from starlette.responses import UJSONResponse
 import gpt_2_simple as gpt2
-import tensorflow as tf
 import uvicorn
 import os
-import re
 from random import uniform
 import tweepy
 
@@ -53,8 +51,7 @@ async def homepage(request):
                              headers=response_header)
 
     while True:
-        # You can adapt this block for any text-generation method,
-        # e.g. pulling text from a list.
+        # You can adapt this block for any text-generation method.
         text = gpt2.generate(sess,
                              length=300,
                              temperature=uniform(0.7, 1.0),
@@ -62,12 +59,12 @@ async def homepage(request):
                              return_as_list=True
                              )[0]
 
-        if len(text) <= 280:
+        if len(text) <= 280 and '<|startoftext|>' not in text:
             break
 
     api.update_status(text)
 
-    return UJSONResponse({'text': 'Tweeet succeessful!'},
+    return UJSONResponse({'text': 'Tweet successful!'},
                          headers=response_header)
 
 if __name__ == '__main__':
