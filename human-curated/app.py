@@ -77,22 +77,37 @@ async def homepage(request):
 
     with db.connect() as conn:
         q = (
-            tweets
-            .filter(tweets.account == ACCOUNT,
-                    tweets.tweet_timestamp == None)
+            select([tweets])
+            .where(tweets.columns.account == ACCOUNT)
+            .where(tweets.columns.tweet_timestamp == None)
             .order_by(func.random())
             .limit(1)
         )
-        tweet = conn.execute(q)
+        tweet = conn.execute(q).fetchone()
+
+        if tweet is None:
+            return UJSONResponse({'text': f"No more tweets left!"},
+                         headers=response_header)
 
         api.update_status(tweet.tweet)
 
         # Save record of tweet to prevent reuse
-        timestamp = time.strftime("%Y-%m-%d %H:%M:%S+00", time.gmtime())
-        tweet.tweet_timestamp = timestamp
-        conn.commit()
+        t_timestamp = time.strftime("%Y-%m-%d %H:%M:%S+00", time.gmtime())
+        t_url = f"https://twitter.com/{t.user.screen_name}/status/{t.id_str}"
 
-    return UJSONResponse({'text': 'Tweet successful!'},
+        q_update = (
+            tweets
+            .update()
+            .where(tweets.columns.id == tweet.id)
+            .values(tweet_timestamp=t_timestamp,
+                    tweet_url=t_url)
+        )
+
+        conn.execute(q_update)
+
+    db.close()
+
+    return UJSONResponse({'text': f"Tweet posted! {t_url}"},
                          headers=response_header)
 
 if __name__ == '__main__':
