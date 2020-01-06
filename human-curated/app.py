@@ -28,35 +28,12 @@ CONNECTION_NAME = os.environ.get("CONNECTION_NAME")
 # Request token: optional
 REQUEST_TOKEN = os.environ.get('REQUEST_TOKEN', None)
 
-db = create_engine(
-    engine.url.URL(
-        drivername='postgres+pg8000',
-        username=DB_USER,
-        password=DB_PASS,
-        database=DB_NAME,
-        query={
-            'unix_sock': '/cloudsql/{}/.s.PGSQL.5432'.format(
-                CONNECTION_NAME)
-        }
-    ),
-    pool_size=1
-)
-
-metadata = MetaData()
-tweets = Table('tweets', metadata, autoload=True,
-               autoload_with=db)
-
 app = Starlette(debug=False)
 
 # Needed to avoid cross-domain issues
 response_header = {
     'Access-Control-Allow-Origin': '*'
 }
-
-auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
-
-api = tweepy.API(auth)
 
 
 @app.route('/', methods=['GET', 'POST', 'HEAD'])
@@ -75,6 +52,29 @@ async def homepage(request):
         return UJSONResponse({'text': 'Incorrect request token.'},
                              headers=response_header)
 
+    db = create_engine(
+        engine.url.URL(
+            drivername='postgres+pg8000',
+            username=DB_USER,
+            password=DB_PASS,
+            database=DB_NAME,
+            query={
+                'unix_sock': '/cloudsql/{}/.s.PGSQL.5432'.format(
+                    CONNECTION_NAME)
+            }
+        ),
+        pool_size=1
+    )
+
+    metadata = MetaData()
+    tweets = Table('tweets', metadata, autoload=True,
+                autoload_with=db)
+
+    auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+    auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+
+    api = tweepy.API(auth)
+
     with db.connect() as conn:
         q = (
             select([tweets])
@@ -87,9 +87,9 @@ async def homepage(request):
 
         if tweet is None:
             return UJSONResponse({'text': f"No more tweets left!"},
-                         headers=response_header)
+                                 headers=response_header)
 
-        api.update_status(tweet.tweet)
+        t = api.update_status(tweet.tweet)
 
         # Save record of tweet to prevent reuse
         t_timestamp = time.strftime("%Y-%m-%d %H:%M:%S+00", time.gmtime())
@@ -105,7 +105,7 @@ async def homepage(request):
 
         conn.execute(q_update)
 
-    db.close()
+    db.dispose()
 
     return UJSONResponse({'text': f"Tweet posted! {t_url}"},
                          headers=response_header)
