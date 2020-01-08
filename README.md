@@ -15,7 +15,15 @@ Additionally, you can specify a `REQUEST_TOKEN` as an Environment Variable, to p
 
 See the READMEs in the folders for more pertinent information to the app.
 
-## Helpful Notes
+## Setting Up A Twitter Bot
+
+To run a Twitter bot, you need the `CONSUMER_KEY` and `CONSUMER_SECRET` for an app, and the `ACCESS_TOKEN` and `ACCESS_SECRET` corresponding to the user. Per recent Twitter antibotting changes, this has been made more difficult:
+
+1. Create a Twitter app *on your human account*. You will have to go through a manual Twitter review.
+2. In the App Settings, you'll see the `CONSUMER_KEY` and `CONSUMER_SECRET`.
+3. Set up [Twurl](https://github.com/twitter/twurl) on your computer.
+4. In a Terminal, run `twurl authorize --consumer-key <CONSUMER_KEY> --consumer-secret <CONSUMER_SECRET>` with the info above. It will give you a URL to approve an app; go to that URL *on your bot account* and approve the app. It will give you a PIN to input into the terminal.
+5. Open the `~/.twurlrc` file, which will have thee `ACCESS_TOKEN` and `ACCESS_SECRET` you need for that account.
 
 ## Maintainer/Creator
 
