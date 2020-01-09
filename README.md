@@ -1,11 +1,13 @@
 # twitter-cloud-run
 
-A minimal configuration app to run Twitter bots on a schedule using Google Cloud Run and Google Cloud Scheduler, making running the bot effectively free and can scale to effectively an unlimited number of bots if necessary.
+A (relatively) minimal configuration app to run Twitter bots on a schedule using Google Cloud Run and Google Cloud Scheduler, making running the bot effectively free and can scale to effectively an unlimited number of bots if necessary.
 
 There are two variants in their respective folders:
 
 * `human_curated` : Uses a centralized Cloud SQL database to load pregenerated Tweets, and records if a tweet is generated. Recommended for AI tweet generation due to unpredictibility of AI-generated tweets.
 * `gpt-2`: Uses an pretrained GPT-2 model, similar to the gpt2-cloud-run repo. (although the base `app.py` is built for `gpt-2-simple`, it's easy to hack it out and replace your own method of text generation for the bot.
+
+Each folder has a `Dockerfile` and an `app.py` which runs the app in Cloud Run: you can build the container in Docker using `docker build .`, and upload it to Google Container Registry [with these instuctions](https://cloud.google.com/container-registry/docs/pushing-and-pulling).
 
 ## Usage
 
