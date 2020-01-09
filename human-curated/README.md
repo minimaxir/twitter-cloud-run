@@ -20,7 +20,7 @@ Sets up an external cron to trigger the bots. This can be set individually for e
 
 A PostgreSQL 11 database in [Cloud SQL](https://cloud.google.com/sql/docs/) which Cloud Run services can natively access. The minimal/cheapest config (1 vCPU, 0.6 GB RAM) is more-than-sufficient.
 
-![](../docs/pgadmin.png)
+![](../docs/pgAdmin.png)
 
 With [Cloud SQL Proxy](https://cloud.google.com/sql/docs/postgres/sql-proxy), the Cloud SQL instance can be easily accessed from the desktop via clients such as [pgAdmin](https://www.pgadmin.org).
 
