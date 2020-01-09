@@ -29,6 +29,12 @@ To run a Twitter bot, you need the `CONSUMER_KEY` and `CONSUMER_SECRET` for an a
 4. In a Terminal, run `twurl authorize --consumer-key <CONSUMER_KEY> --consumer-secret <CONSUMER_SECRET>` with the info above. It will give you a URL to approve an app; go to that URL *on your bot account* and approve the app. It will give you a PIN to input into the terminal.
 5. Open the `~/.twurlrc` file, which will have thee `ACCESS_TOKEN` and `ACCESS_SECRET` you need for that account.
 
+## Examples
+
+* [@minimaxir_GPT2](https://twitter.com/minimaxir_GPT2) — bot of [@minimaxir](https://twitter.com/minimaxir) (me!)
+* [@GenePark_GPT2](https://twitter.com/GenePark_GPT2) — bot of [@GenePark](https://twitter.com/GenePark)
+* [@IceT_GPT2](https://twitter.com/IceT_GPT2) — bot of [@FINALLEVEL](https://twitter.com/FINALLEVEL)
+
 ## Maintainer/Creator
 
 Max Woolf ([@minimaxir](https://minimaxir.com))
