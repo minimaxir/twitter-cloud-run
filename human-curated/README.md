@@ -27,7 +27,7 @@ With [Cloud SQL Proxy](https://cloud.google.com/sql/docs/postgres/sql-proxy), th
 
 ## Database Schema
 
-The database table schema is designed to minimize the amount of data saved to minimize costs. Multiple accounts can store pending tweets in a single table. 
+The database table schema (created with the SQL in `create_table.sql`) is designed to minimize the amount of data saved to minimize costs. Multiple accounts can store pending tweets in a single table. 
 
 The table has 5 columns:
 
