@@ -16,6 +16,12 @@ The cost of running the container is effectively zero as it is live for only sec
 
 Sets up an external cron to trigger the bots. This can be set individually for each bot, can have set timezones, and can be edited if necessary.
 
+NB: Due to a [weird error](https://stackoverflow.com/questions/59024925/gcp-cloud-scheduler-throws-error-for-a-http-targettype) where a HTTP cron might fail to run, you may want to set the cron to retry on fail:
+
+```
+gcloud scheduler jobs update http <JOB_NAME> --max-retry-attempts 5
+```
+
 ## Cloud SQL
 
 A PostgreSQL 11 database in [Cloud SQL](https://cloud.google.com/sql/docs/) which Cloud Run services can natively access. The minimal/cheapest config (1 vCPU, 0.6 GB RAM) is more-than-sufficient.
